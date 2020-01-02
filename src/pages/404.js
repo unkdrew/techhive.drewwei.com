@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '../components/Layout'
+import Layout from '../components/layout'
 
 const NotFoundPage = () => (
   <Layout>
@@ -7,7 +7,7 @@ const NotFoundPage = () => (
         <section id="one">
             <div className="inner">
                 <h1>NOT FOUND</h1>
-                <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
+                <p>Uh-oh! The page you were looking for does not exist..</p>
             </div>
         </section>
     </div>

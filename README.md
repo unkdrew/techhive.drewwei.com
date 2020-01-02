@@ -16,6 +16,8 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
   * If you use a Mac, you can skip this. Apple ships their own fork of `git`.
 * Install Gatsby CLI
   * Run command: `npm install -g gatsby-cli`
+* Install Netlify CLI
+  * Run command: `npm install -g netlify-cli`
 
 ### 2. Recommended Development Tools
 * Terminal: [iTerm2](https://www.iterm2.com/)
@@ -36,7 +38,7 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
 
 #### 3.2 To run the website locally on your machine
 * `cd` into the root directory of the website project.
-* Run command: `gatsby develop`
+* Run command: `netlify dev`
 
 #### 3.3 How to test changes locally
 * Write tests in NightwatchJS in the `tst` folder.
