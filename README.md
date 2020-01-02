@@ -1,39 +1,59 @@
-# gatsby-starter-forty
+# Snapshot of the template on GitHub which this project was created from
+https://github.com/codebushi/gatsby-starter-forty/tree/0c964b13bb83983e308eb3ea0a506038aa75355e
 
-**This is a starter for Gatsby.js V2.**
+# Original README
+https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0a506038aa75355e/README.md
 
-**The older V1 version of this starter can be found on the v1 branch**
+# New README
+### 1. Environment Setup
+* Install [Homebrew](https://docs.brew.sh/Installation)
+* Install Node.js
+  * Run command: `brew install node`
+  * Verify version of the installed `node` and `npm`
+    * Run command: `node --version` (Version should be greater than or equal to `v12.4.0`.)
+    * Run command: `npm --version` (Version should be greater than or equal to `6.9.0`.)
+* Install Git
+  * If you use a Mac, you can skip this. Apple ships their own fork of `git`.
+* Install Gatsby CLI
+  * Run command: `npm install -g gatsby-cli`
 
-Gatsby.js V2 starter based on the Forty site template, designed by HTML5 UP. Check out https://codebushi.com/gatsby-starters-and-themes/ for more Gatsby starters and templates.
+### 2. Recommended Development Tools
+* Terminal: [iTerm2](https://www.iterm2.com/)
+* Shell: [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh)
 
-## Preview
+### 3. Local Development
+#### 3.1 Check package health
+* Check if there are dependencies not declared in `package.json`
+  * This checks if there are dependencies that are available on your machine but not declared in this package's dependency closure, e.g. dependencies that were installed via `npm install` without specifying the `--save` flag.
+  * Run command: `npm prune`
+* Check if there are upgradable dependencies
+  * Run command: `npm outdated`
+  * For each of the outstanding/outdated dependency
+    * Run command: `npm install DEPENDENCY——NAME@latest --save`
+    * e.g. `npm install gatsby@latest --save`
+  * Reproduce the version lock of this package's dependency closure after any depdency upgrade
+    * Run command: `npm shrinkwrap --dev`
 
-https://gatsby-forty.surge.sh
+#### 3.2 To run the website locally on your machine
+* `cd` into the root directory of the website project.
+* Run command: `gatsby develop`
 
-## Installation
+#### 3.3 How to test changes locally
+* Write tests in NightwatchJS in the `tst` folder.
+* Run command: `npm run integ-test-local`
 
-Install this starter (assuming Gatsby is installed) by running from your CLI:
-<br/>
-`gatsby new gatsby-starter-forty https://github.com/codebushi/gatsby-starter-forty`
+### 4. Publish to Beta Stage
+GitHub Pages is used for beta testing, any manual testing or automated testing should be done against this stage before promoting changes to the next stage.
 
-Run `gatsby develop` in the terminal to start the dev site.
+* Run command: `npm run deploy`
+* Beta website can be reached at: https://travis-christian-assembly.github.io/overseas-chinese-homecoming-gathering-website/
 
-## CSS Grid
+#### 4.1 How to test against Beta stage
+* Run command: `npm run integ-test-beta`
 
-The grid on this site was replaced with a custom version, built using CSS Grid. It's a very simple 12 column grid that is disabled on mobile. To start using the grid, wrap the desired items with `grid-wrapper`. Items inside the `grid-wrapper` use the class `col-` followed by a number, which should add up to 12.
+### 5. Publish to Prod Stage
+Once testing (manual or automated) is done in Beta stage, do the following to deploy changes to the production website.
 
-Here is an example of using the grid, for a 3 column layout:
+* Run command: `git push`
 
-```
-<div className="grid-wrapper">
-    <div className="col-4">
-        <p>Content Here</p>
-    </div>
-    <div className="col-4">
-        <p>Content Here</p>
-    </div>
-    <div className="col-4">
-        <p>Content Here</p>
-    </div>
-</div>
-```
+Note: Process for publishing to S3/CloudFront is still TBD.
