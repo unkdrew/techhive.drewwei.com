@@ -1,6 +1,6 @@
-import React from 'react'
 import Layout from 'components/layout'
 import { graphql } from 'gatsby'
+import React from 'react'
 
 // `data` is injected by the GraphQL query at the bottom
 export default function GuideTemplate({ data }) {
@@ -9,9 +9,6 @@ export default function GuideTemplate({ data }) {
   return (
     <Layout fullMenu>
       <article id="main">
-        <header>
-          <h2>Guides</h2>
-        </header>
         <section className="wrapper style5">
           <div className="inner">
             <section>

@@ -13,7 +13,6 @@ const IndexPage = ({
     .filter(edge => !!edge.node.frontmatter.date)
     .filter(edge => edge.node.frontmatter.addToIndex)
     .map(edge => <li key={edge.node.id}><GuideLink key={edge.node.id} guide={edge.node} /></li>)
-  console.log(Guides)
 
   return (
     <Layout>
@@ -55,7 +54,7 @@ export default IndexPage
 export const pageQuery = graphql`
   query {
     allMarkdownRemark(
-      sort: { order: ASC, fields: [ frontmatter___date ] },
+      sort: { order: DESC, fields: [ frontmatter___date ] },
       filter: { frontmatter: { type: { eq: "guide" } } }
     ) {
       edges {
