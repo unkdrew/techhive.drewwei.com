@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a55c8f7f-edb7-474b-a634-b3f1abf9ea56/deploy-status)](https://app.netlify.com/sites/dreezys-tech-hive/deploys)
+
 # Snapshot of the template on GitHub which this project was created from
 https://github.com/codebushi/gatsby-starter-forty/tree/0c964b13bb83983e308eb3ea0a506038aa75355e
 
@@ -33,7 +35,7 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
   * For each of the outstanding/outdated dependency
     * Run command: `npm install DEPENDENCY——NAME@latest --save`
     * e.g. `npm install gatsby@latest --save`
-  * Reproduce the version lock of this package's dependency closure after any depdency upgrade
+  * Reproduce the version lock of this package's dependency closure after any dependency upgrade
     * Run command: `npm shrinkwrap --dev`
 
 #### 3.2 To run the website locally on your machine
