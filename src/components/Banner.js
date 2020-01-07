@@ -7,8 +7,10 @@ const Banner = (props) => (
                 <h1>Dreezy's Tech Hive</h1>
             </header>
             <div className="content">
-                <p>Drew Wei<br/>
-                A software engineer @ Amazon Web Services</p>
+                <p>Drew Wei</p>
+            </div>
+            <div className="content">
+                <p>A software engineer @ Amazon Web Services</p>
             </div>
         </div>
     </section>

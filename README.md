@@ -20,6 +20,8 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
   * Run command: `npm install -g gatsby-cli`
 * Install Netlify CLI
   * Run command: `npm install -g netlify-cli`
+* Install Docker
+  * Visit [docker.com](https://www.docker.com/) to download a desktop client for Mac
 
 ### 2. Recommended Development Tools
 * Terminal: [iTerm2](https://www.iterm2.com/)
@@ -33,7 +35,7 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
 * Check if there are upgradable dependencies
   * Run command: `npm outdated`
   * For each of the outstanding/outdated dependency
-    * Run command: `npm install DEPENDENCY——NAME@latest --save`
+    * Run command: `npm install <DEPENDENCY_NAME>@latest --save`
     * e.g. `npm install gatsby@latest --save`
   * Reproduce the version lock of this package's dependency closure after any dependency upgrade
     * Run command: `npm shrinkwrap --dev`
@@ -45,6 +47,18 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
 #### 3.3 How to test changes locally
 * Write tests in NightwatchJS in the `tst` folder.
 * Run command: `npm run integ-test-local`
+
+#### 3.4 How to test Netlify build/deploy locally
+* Run command:
+```
+  docker pull netlify/build
+  mkdir netlify_builds
+  cd netlify_builds
+  git clone https://github.com/netlify/build-image
+  cd build-image
+  ./test-tools/start-image.sh </path/to/your/repository>
+  build npm run build
+```
 
 ### 4. Publish to Beta Stage
 GitHub Pages is used for beta testing, any manual testing or automated testing should be done against this stage before promoting changes to the next stage.

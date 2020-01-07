@@ -1,0 +1,75 @@
+import GuideLink from 'components/GuideLink'
+import Layout from 'components/layout'
+import { graphql } from 'gatsby'
+import React from 'react'
+import Helmet from 'react-helmet'
+
+const IndexPage = ({
+  data: {
+    allMarkdownRemark: { edges }
+  }
+}) => {
+  const Guides = edges
+    .filter(edge => !!edge.node.frontmatter.date)
+    .filter(edge => edge.node.frontmatter.addToIndex)
+    .map(edge => <li key={edge.node.id}><GuideLink key={edge.node.id} guide={edge.node} /></li>)
+  console.log(Guides)
+
+  return (
+    <Layout>
+      <Helmet>
+        <title>Guides - Dreezy's Tech Hive</title>
+        <meta name="description" content="Guides" />
+      </Helmet>
+
+      <section id="banner" className="style1">
+        <div className="inner">
+          <header className="major">
+            <h1>Guides</h1>
+          </header>
+          <div className="content">
+            <p>From coding to everything else.</p>
+          </div>
+        </div>
+      </section>
+
+      <div id="main">
+        <section id="one">
+          <div className="inner">
+            <header className="major">
+              <h2>Index</h2>
+            </header>
+            <ul>
+              {Guides}
+            </ul>
+          </div>
+        </section>
+      </div>
+
+    </Layout>
+  )
+}
+
+export default IndexPage
+
+export const pageQuery = graphql`
+  query {
+    allMarkdownRemark(
+      sort: { order: ASC, fields: [ frontmatter___date ] },
+      filter: { frontmatter: { type: { eq: "guide" } } }
+    ) {
+      edges {
+        node {
+          id
+          excerpt(pruneLength: 250)
+          frontmatter {
+            path
+            date(formatString: "MMMM DD, YYYY")
+            title
+            addToIndex
+          }
+        }
+      }
+    }
+  }
+`
