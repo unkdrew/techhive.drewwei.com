@@ -1,0 +1,342 @@
+---
+path: '/guides/disable-sni-for-api-gateway-custom-domain'
+date: '2020-01-09T00:00:00.000Z'
+type: 'guide'
+title: "How to disable SNI for your API Gateway endpoint's custom domain"
+description: "How to disable SNI for your API Gateway endpoint's custom domain"
+addToIndex: true
+---
+
+# 1. Glossary
+* SNI: Server Name Indication, is an extension to the Transport Layer Security (TLS) computer networking protocol by which a client indicates which hostname it is attempting to connect to at the start of the handshaking process.
+
+# 2. Overview
+**SNI**, or **Server Name Indication**, allows a server to present multiple certificates on the same IP address and TCP port number, and hence allows multiple secure (HTTPS) websites (or any other service over TLS) to be served by the same IP address without requiring all those sites to use the same certificate.
+
+However, SNI is only supported by most browsers released after 2010, meaning that some legacy browsers will not be able to communicate with your custom domain name if your custom domain serves HTTPS requests using SNI.
+
+This document aims to guide you through the steps to set up your API Gateway endpoint and custom domain name, in a way that the custom domain name does not require your clients to provide the hostname that they are trying to connect to.
+
+# 3. Things to note
+* An edge-optimized API Gateway endpoint internally employs an APIG-managed CloudFront distribution that sits in front of the API Gateway endpoint, and this CloudFront distribution is configured to only respond to HTTPS requests from clients that support SNI.
+* For a CloudFront distribution to accept requests from clients that do not support SNI, we need to configure the CloudFront distribution to use Dedicated IP Custom SSL. This will also incur additional cost, as it is dedicating an IP address to your SSL certificate. See [here](https://aws.amazon.com/cloudfront/custom-ssl-domains/) for more details and pricing information.
+* The custom SSL certificate for the CloudFront distribution must exist in `us-east-1`. You might have to manually manage the certificate instead of source-controlling it because of this. (See [CloudFront Developer Guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region))
+* Validation of a ACM certificate cannot be automated using CloudFormation as of 01/07/2020. As a result, owner will need to manually validate the certificate.
+
+# 4. What we want
+In the end, we want a custom domain name that routes to a CloudFront distribution that 1) is managed by ourselves, 2) responds to requests from clients that do not support SNI, and 3) routes to our regional API Gateway endpoint.
+
+With this setup, our API can still be accessed from anywhere with low latency as we have a CloudFront distribution between the custom domain name and the API Gateway endpoint.
+
+# 5. Implementation
+
+## 5.1 Prerequisites
+The following assumes that the custom domain name has already been registered and is managed by us. Anything beyond that will be source-controlled, except for 1) updating the domain registry with the Name Servers referenced in the source-controlled Route 53 Hosted Zone, and 2) validating the source-controlled ACM certificate.
+
+We will use `foo.myexample.com` as our intended custom domain name for our API Gateway endpoint.
+
+## 5.2 Regional API Gateway endpoint
+Example using CloudFormation:
+```yaml
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Parameters:
+  RootDomainName:
+    Type: String
+    Default: 'myexample.com'
+  CustomDomainName:
+    Type: String
+    Default: 'foo.myexample.com'
+Resources:
+  RegionalApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      Name: 'MyApi'
+      StageName: 'beta'
+      EndpointConfiguration: 'REGIONAL'
+      MethodSettings:
+        - LoggingLevel: 'INFO'
+          MetricsEnabled: true
+          DataTraceEnabled: true
+          ResourcePath: '/*'
+          HttpMethod: '*'
+      DefinitionBody:
+        ...
+```
+
+## 5.3 DNS records
+Here we are using Route 53 to manage our DNS records, as an example:
+```yaml
+...
+Resources:
+  ...
+  CustomDomainHostedZone:  # This will also create the Name Server records, so no need to explicitly define Name Server records.
+    Type: 'AWS::Route53::HostedZone'
+    Properties:
+      Name: !Ref RootDomainName
+  CustomDomainAliasRecordSet:
+    Type: 'AWS::Route53::RecordSet'
+    DependsOn:
+      - CustomDomainHostedZone
+      - SniDisabledRegionalApiCloudFrontDistribution
+    Properties:
+      Type: 'A'
+      Name: !Ref CustomDomainName
+      HostedZoneId: !Ref CustomDomainHostedZone
+      AliasTarget:
+        DNSName: !GetAtt SniDisabledRegionalApiCloudFrontDistribution.DomainName
+        HostedZoneId: 'Z2FDTNDATAQYW2'  # Must be hardcoded, see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget-1.html#cfn-route53-aliastarget-hostedzoneid
+```
+
+## 5.4 SSL certificate for the custom domain name
+Before issuing an SSL certificate, we will need to go to the domain registrar to update the custom domain to use the Name Servers we created in Route 53 so that we have control over query handling and traffic routing.
+
+During the execution of the CloudFormation stack, the certificate creation will get stuck in a pending state until it is validated. To validate the certificate, simply go to the Route 53 console, select the newly created certificate that is in pending, and click `Create record in Route 53` to add the `CNAME` record to the Route 53 Hosted Zone which we have created above. In a few minutes, the certificate should be validated and issued, and the CloudFormation stack execution should continue.
+
+One other thing to note is that the custom SSL certificate that is to be used for a CloudFront distribution must exist in `us-east-1`. This might justify a manual creation of the SSL certificate.
+
+Here we are using AWS Certificate Manager to manage our SSL certificate, as an example:
+```yaml
+...
+Resources:
+  ...
+  CustomDomainCertificate:
+    Type: 'AWS::CertificateManager::Certificate'
+    Properties:
+      DomainName: !Ref CustomDomainName
+      ValidationMethod: 'DNS'  # Alternatively, validation can be via emails but not preferred.
+```
+
+### 5.5 Custom domain in API Gateway
+Before we can set up the CloudFront distribution, we will need the regional domain name of our custom domain which will be used as the origin of our CloudFront distribution.
+
+Example:
+```yaml
+...
+Resources:
+  ...
+  RegionalApiCustomDomain:
+    Type: 'AWS::ApiGateway::DomainName'
+    DependsOn: CustomDomainCertificate
+    Properties:
+      DomainName: !Ref CustomDomainName
+      EndpointConfiguration:
+        Types:
+          - 'REGIONAL'
+      RegionalCertificateArn: !Ref CustomDomainCertificate
+      SecurityPolicy: 'TLS_1_0'
+  RegionApiCustomDomainBasePathMapping:
+    Type: 'AWS::ApiGateway::BasePathMapping'
+    Properties:
+      BasePath: '/v1'
+      DomainName: !Ref CustomDomainName
+      RestApiId: !Ref RegionalApi
+      Stage: <your_stage_defined_in_RegionalApi>
+```
+
+## 5.6 CloudFront distribution
+To use a dedicated IP address, set `AWS::CloudFront::Distribution::ViewerCertificate::SslSupportMethod` to `vip`. See [AWS CloudFormation documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-viewercertificate.html#cfn-cloudfront-distribution-viewercertificate-sslsupportmethod) for more information.
+
+Example (also enabling access logging on the CloudFront distribution for debugging purposes):
+```yaml
+...
+Resources:
+  ...
+  CustomDomainAccessLoggingBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: 'customdomain-accesslogs'
+  CustomDomainAccessLoggingBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    DependsOn: CustomDomainAccessLoggingBucket
+    Properties:
+      Bucket: !Ref CustomDomainAccessLoggingBucket
+      PolicyDocument:
+        Statement:
+          - Sid: 'CustomDomainAccessLogging'
+            Effect: Allow
+            Principal:
+              AWS:
+                - !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+            Action:
+              - s3:GetBucketAcl
+              - s3:PutBucketAcl
+            Resource:
+              - !Sub '${CustomDomainAccessLoggingBucket.Arn}'
+              - !Sub '${CustomDomainAccessLoggingBucket.Arn}/*'
+  SniDisabledRegionalApiCloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    DependsOn:
+      - RegionalApiCustomDomain
+      - CustomDomainAccessLoggingBucket
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref CustomDomainName
+        Enabled: true
+        Origins:
+          - Id: 'RegionalEndpoint'
+            DomainName: !GetAtt RegionalApiCustomDomain.RegionalDomainName
+            CustomOriginConfig:
+              OriginProtocolPolicy: 'https-only'  # API Gateway does not support unencrypted (HTTP) endpoints. See: https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-cloudfront-distribution/
+              OriginSSLProtocols:
+                - 'TLSv1'
+                - 'TLSv1.1'
+                - 'TLSv1.2'
+        PriceClass: 'PriceClass_All'  # This is to have the best latency performance around the world
+        DefaultCacheBehavior:
+          TargetOriginId: 'RegionalEndpoint'
+          AllowedMethods: [ HEAD, DELETE, POST, GET, OPTIONS, PUT, PATCH ]
+          ForwardedValues:
+            Headers:
+              - '*'
+            QueryString: true
+            QueryStringCacheKeys: []  # Forward query string parameters for GET but not caching results
+          ViewerProtocolPolicy: 'redirect-to-https'
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CustomDomainCertificate
+          MinimumProtocolVersion: 'TLSv1'
+          SslSupportMethod: 'vip'  # This enables our CloudFront distribution to use a dedicated IP address
+        Logging:
+          Bucket: !GetAtt CustomDomainAccessLoggingBucket.DomainName
+          IncludeCookies: true
+```
+
+# 6. Verification
+Now go to https://www.ssllabs.com/ssltest/ and inspect our custom domain's SSL settings. The scan report should show that handshake simulations without SNI are also passing.
+
+## 6.1 Example scan result for a site that only serves HTTPS requests using SNI
+![](SNI_Summary_With_SNI.png)
+![](SNI_Details_With_SNI.png)
+
+## 6.2 Example scan result for a site that serves all HTTPS requests
+![](SNI_Summary_Without_SNI.png)
+![](SNI_Details_Without_SNI.png)
+
+# 7. Appendix
+
+## 7.1 Final CloudFormation template
+```yaml
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Parameters:
+  RootDomainName:
+    Type: String
+    Default: 'myexample.com'
+  CustomDomainName:
+    Type: String
+    Default: 'foo.myexample.com'
+Resources:
+  RegionalApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      Name: 'MyApi'
+      StageName: 'beta'
+      EndpointConfiguration: 'REGIONAL'
+      MethodSettings:
+        - LoggingLevel: 'INFO'
+          MetricsEnabled: true
+          DataTraceEnabled: true
+          ResourcePath: '/*'
+          HttpMethod: '*'
+      DefinitionBody:
+        ...
+  CustomDomainCertificate:
+    Type: 'AWS::CertificateManager::Certificate'
+    Properties:
+      DomainName: !Ref CustomDomainName
+      ValidationMethod: 'DNS'
+  RegionalApiCustomDomain:
+    Type: 'AWS::ApiGateway::DomainName'
+    DependsOn: CustomDomainCertificate
+    Properties:
+      DomainName: !Ref CustomDomainName
+      EndpointConfiguration:
+        Types:
+          - 'REGIONAL'
+      RegionalCertificateArn: !Ref CustomDomainCertificate
+      SecurityPolicy: 'TLS_1_0'
+  RegionApiCustomDomainBasePathMapping:
+    Type: 'AWS::ApiGateway::BasePathMapping'
+    Properties:
+      BasePath: '/v1'
+      DomainName: !Ref CustomDomainName
+      RestApiId: !Ref RegionalApi
+      Stage: <your_stage_defined_in_RegionalApi>
+  CustomDomainHostedZone:
+    Type: 'AWS::Route53::HostedZone'
+    Properties:
+      Name: !Ref RootDomainName
+  CustomDomainAliasRecordSet:
+    Type: 'AWS::Route53::RecordSet'
+    DependsOn:
+      - CustomDomainHostedZone
+      - SniDisabledRegionalApiCloudFrontDistribution
+    Properties:
+      Type: 'A'
+      Name: !Ref CustomDomainName
+      HostedZoneId: !Ref CustomDomainHostedZone
+      AliasTarget:
+        DNSName: !GetAtt SniDisabledRegionalApiCloudFrontDistribution.DomainName
+        HostedZoneId: 'Z2FDTNDATAQYW2'  # Must be hardcoded, see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget-1.html#cfn-route53-aliastarget-hostedzoneid
+  CustomDomainAccessLoggingBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: 'customdomain-accesslogs-beta'
+  CustomDomainAccessLoggingBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    DependsOn: CustomDomainAccessLoggingBucket
+    Properties:
+      Bucket: !Ref CustomDomainAccessLoggingBucket
+      PolicyDocument:
+        Statement:
+          - Sid: 'CustomDomainAccessLogging'
+            Effect: Allow
+            Principal:
+              AWS:
+                - !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+            Action:
+              - s3:GetBucketAcl
+              - s3:PutBucketAcl
+            Resource:
+              - !Sub '${CustomDomainAccessLoggingBucket.Arn}'
+              - !Sub '${CustomDomainAccessLoggingBucket.Arn}/*'
+  SniDisabledRegionalApiCloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    DependsOn:
+      - RegionalApiCustomDomain
+      - CustomDomainAccessLoggingBucket
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref CustomDomainName
+        Enabled: true
+        Origins:
+          - Id: 'RegionalEndpoint'
+            DomainName: !GetAtt RegionalApiCustomDomain.RegionalDomainName
+            CustomOriginConfig:
+              OriginProtocolPolicy: 'https-only'  # API Gateway does not support unencrypted (HTTP) endpoints. See: https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-cloudfront-distribution/
+              OriginSSLProtocols:
+                - 'TLSv1'
+                - 'TLSv1.1'
+                - 'TLSv1.2'
+        PriceClass: 'PriceClass_All'  # This is to have the best latency performance around the world
+        DefaultCacheBehavior:
+          TargetOriginId: 'RegionalEndpoint'
+          AllowedMethods: [ HEAD, DELETE, POST, GET, OPTIONS, PUT, PATCH ]
+          ForwardedValues:
+            Headers:
+              - '*'
+            QueryString: true
+            QueryStringCacheKeys: []  # Forward query string parameters for GET but not caching results
+          ViewerProtocolPolicy: 'redirect-to-https'
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CustomDomainCertificate
+          MinimumProtocolVersion: 'TLSv1'
+          SslSupportMethod: 'vip'  # This enables your CloudFront distribution to use a dedicated IP address
+        Logging:
+          Bucket: !GetAtt CustomDomainAccessLoggingBucket.DomainName
+          IncludeCookies: true
+```

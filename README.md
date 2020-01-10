@@ -34,9 +34,11 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
   * Run command: `npm prune`
 * Check if there are upgradable dependencies
   * Run command: `npm outdated`
-  * For each of the outstanding/outdated dependency
+  * To update a certain dependency
     * Run command: `npm install <DEPENDENCY_NAME>@latest --save`
     * e.g. `npm install gatsby@latest --save`
+  * To update all dependencies
+    * Run command: `npm update --save/--save-dev`
   * Reproduce the version lock of this package's dependency closure after any dependency upgrade
     * Run command: `npm shrinkwrap --dev`
 
@@ -49,16 +51,23 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
 * Run command: `npm run integ-test-local`
 
 #### 3.4 How to test Netlify build/deploy locally
-* Run command:
-```
-  docker pull netlify/build
-  mkdir netlify_builds
-  cd netlify_builds
-  git clone https://github.com/netlify/build-image
-  cd build-image
+* For the first time
+  * Run command:
+  ```
+    docker pull netlify/build
+    mkdir netlify_builds
+    cd netlify_builds
+    git clone https://github.com/netlify/build-image
+    cd build-image
+    ./test-tools/start-image.sh </path/to/your/repository>
+    build npm run build
+  ```
+* For later attempts
+  * Run command:
+  ```
   ./test-tools/start-image.sh </path/to/your/repository>
   build npm run build
-```
+  ```
 
 ### 4. Publish to Beta Stage
 GitHub Pages is used for beta testing, any manual testing or automated testing should be done against this stage before promoting changes to the next stage.
@@ -73,5 +82,3 @@ GitHub Pages is used for beta testing, any manual testing or automated testing s
 Once testing (manual or automated) is done in Beta stage, do the following to deploy changes to the production website.
 
 * Run command: `git push`
-
-Note: Process for publishing to S3/CloudFront is still TBD.
