@@ -70,7 +70,7 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
   ```
 
 ### 4. Publish to Beta Stage
-GitHub Pages is used for beta testing, any manual testing or automated testing should be done against this stage before promoting changes to the next stage.
+`GitHub Pages` is used for beta testing, any manual testing or automated testing should be done against this stage before promoting changes to the next stage.
 
 * Run command: `npm run deploy`
 * Beta website can be reached at: https://travis-christian-assembly.github.io/overseas-chinese-homecoming-gathering-website/
