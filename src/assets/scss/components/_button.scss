@@ -58,6 +58,14 @@
 			width: 100%;
 		}
 
+		&.menu-link {
+			box-shadow: inherit;
+		}
+
+		&.close {
+			box-shadow: inherit;
+		}
+
 		&.small {
 			font-size: 0.6em;
 		}

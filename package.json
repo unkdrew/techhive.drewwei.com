@@ -6,7 +6,7 @@
   "dependencies": {
     "gatsby": "^2.18.21",
     "gatsby-plugin-manifest": "^2.2.37",
-    "gatsby-plugin-offline": "^3.0.31",
+    "gatsby-plugin-offline": "^3.0.32",
     "gatsby-plugin-react-helmet": "^3.1.21",
     "gatsby-plugin-sass": "^2.1.27",
     "gatsby-remark-copy-images": "^0.2.1",
@@ -14,11 +14,10 @@
     "gatsby-remark-responsive-iframe": "^2.2.31",
     "gatsby-source-filesystem": "^2.1.46",
     "gatsby-transformer-remark": "^2.6.48",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-helmet": "^5.2.1",
-    "typescript": "^3.7.4"
+    "react-helmet": "^5.2.1"
   },
   "keywords": [
     "gatsby"
@@ -33,7 +32,8 @@
   },
   "devDependencies": {
     "gatsby-plugin-root-import": "^2.0.5",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "typescript": "^3.7.5"
   },
   "repository": {
     "type": "git",
