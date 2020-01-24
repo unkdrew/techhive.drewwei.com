@@ -1,11 +1,10 @@
 import Layout from 'components/layout'
 import { graphql } from 'gatsby'
 import React from 'react'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 // `data` is injected by the GraphQL query at the bottom
 export default function GuideTemplate({ data }) {
-  const { markdownRemark } = data  // data.markdownRemark holds our input data
-  const { frontmatter, html } = markdownRemark
   return (
     <Layout fullMenu>
       <article id="main">
@@ -13,12 +12,14 @@ export default function GuideTemplate({ data }) {
           <div className="inner">
             <section>
               <header>
-                <h2>{frontmatter.title}</h2>
-                <p>{frontmatter.description}</p>
+                <h2>{data.mdx.frontmatter.title}</h2>
+                <p>{data.mdx.frontmatter.description}</p>
               </header>
             </section>
             <hr />
-            <div dangerouslySetInnerHTML={{ __html: html }}/>
+            <div>
+              <MDXRenderer>{data.mdx.body}</MDXRenderer>
+            </div>
           </div>
         </section>
       </article>
@@ -28,13 +29,13 @@ export default function GuideTemplate({ data }) {
 
 export const pageQuery = graphql`
   query($path: String!) {
-    markdownRemark(frontmatter: { path: { eq: $path } }) {
+    mdx(frontmatter: { path: { eq: $path } }) {
       frontmatter {
         path
         title
         description
       }
-      html
+      body
     }
   }
 `

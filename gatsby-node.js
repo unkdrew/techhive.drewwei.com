@@ -19,7 +19,7 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
-      allMarkdownRemark{
+      allMdx{
         edges {
           node {
             frontmatter {
@@ -36,7 +36,7 @@ exports.createPages = ({ actions, graphql }) => {
         return Promise.reject(result.errors)
       }
 
-      return result.data.allMarkdownRemark.edges.forEach(
+      return result.data.allMdx.edges.forEach(
         ({ node }) => {
           createPageForPageType(node, 'guide', guideTemplate)
         }

@@ -6,7 +6,7 @@ import Helmet from 'react-helmet'
 
 const IndexPage = ({
   data: {
-    allMarkdownRemark: { edges }
+    allMdx: { edges }
   }
 }) => {
   const Guides = edges
@@ -53,7 +53,7 @@ export default IndexPage
 
 export const pageQuery = graphql`
   query {
-    allMarkdownRemark(
+    allMdx(
       sort: { order: DESC, fields: [ frontmatter___date ] },
       filter: { frontmatter: { type: { eq: "guide" } } }
     ) {

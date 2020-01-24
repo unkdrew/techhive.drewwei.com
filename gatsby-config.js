@@ -18,7 +18,7 @@ module.exports = {
         background_color: '#663399',
         theme_color: '#663399',
         display: 'minimal-ui',
-        icon: 'src/assets/images/website-icon.png', // This path is relative to the root of the site.
+        icon: 'src/assets/images/icon.png', // This path is relative to the root of the site.
       },
     },
     {
@@ -31,18 +31,24 @@ module.exports = {
       }
     },
     'gatsby-plugin-sass',
+    'gatsby-plugin-sharp',
     {
-      resolve: 'gatsby-source-filesystem',
+      resolve: 'gatsby-plugin-mdx',
       options: {
-        name: 'markdown-pages',
-        path: path.join(__dirname, 'src/markdown-pages'),
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-images',
+            options: {
+              maxWidth: 800
+            }
+          }
+        ]
       }
     },
     {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
-          'gatsby-remark-copy-images',
           {
             resolve: 'gatsby-remark-embed-video',
             options: {
@@ -54,6 +60,13 @@ module.exports = {
           },
           'gatsby-remark-responsive-iframe'
         ]
+      }
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'markdown-pages',
+        path: path.join(__dirname, 'src/markdown-pages')
       }
     }
   ]
