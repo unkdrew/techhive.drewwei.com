@@ -1,10 +1,11 @@
+const config = require('./config');
 const path = require('path')
 
 module.exports = {
   siteMetadata: {
-    title: "Dreezy's Tech Hive",
-    author: "Drew Wei",
-    description: "A personal blog, about tech."
+    title: config.siteTitle,
+    author: config.siteAuthor,
+    description: 'A personal blog, about tech.'
   },
   plugins: [
     'gatsby-plugin-offline',
