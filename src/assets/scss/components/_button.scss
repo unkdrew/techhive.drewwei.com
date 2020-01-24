@@ -60,10 +60,23 @@
 
 		&.menu-link {
 			box-shadow: inherit;
+			@include vendor('transition', (
+				'color #{_duration(transition)} ease-in-out'
+			));
+
+			&:active, &:focus {
+				background-color: transparent;
+				outline: none;
+			}
 		}
 
 		&.close {
 			box-shadow: inherit;
+
+			&:active, &:focus {
+				background-color: transparent;
+				outline: none;
+			}
 		}
 
 		&.small {
