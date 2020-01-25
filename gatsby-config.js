@@ -8,19 +8,25 @@ module.exports = {
     description: 'A personal blog, about tech.'
   },
   plugins: [
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: 'UA-156922059-1'
+      }
+    },
     'gatsby-plugin-offline',
     'gatsby-plugin-react-helmet',
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: 'gatsby-plugin-manifest',
       options: {
-        name: 'gatsby-starter-default',
-        short_name: 'starter',
+        name: "Dreezy's Tech Hive",
+        short_name: "Dreezy's Tech Hive",
         start_url: '/',
-        background_color: '#663399',
-        theme_color: '#663399',
+        background_color: '#78c4ff',
+        theme_color: '#78c4ff',
         display: 'minimal-ui',
-        icon: 'src/assets/images/icon.png', // This path is relative to the root of the site.
-      },
+        icon: 'src/assets/images/icon.png'
+      }
     },
     {
       resolve: 'gatsby-plugin-root-import',
@@ -55,8 +61,8 @@ module.exports = {
             options: {
               width: 560,
               height: 315,
-              related: true, // Will remove related videos from the end of an embedded YouTube video.
-              noIframeBorder: true // Disable insertion of <style> border: 0
+              related: true,  // Will remove related videos from the end of an embedded YouTube video.
+              noIframeBorder: true  // Disable insertion of <style> border: 0
             }
           },
           'gatsby-remark-responsive-iframe'
