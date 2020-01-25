@@ -25,10 +25,10 @@ exports.createPages = ({ actions, graphql }) => {
 
   function createPageForPageType(node, type, template) {
     if (type == node.frontmatter.type) {
-      const { description, title } = node.frontmatter
+      const { description, path, title } = node.frontmatter
       createPage(
         {
-          path: node.frontmatter.path,
+          path,
           component: template,
           context: {
             description,
@@ -36,13 +36,15 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       )
+      console.log(`  Created page: ${path}`)
     }
   }
 
   function createPageForTag(tag, template) {
+    const path = `/tags/${kebabCase(tag)}/`
     createPage(
       {
-        path: `/tags/${kebabCase(tag)}/`,
+        path,
         component: template,
         context: {
           tag,
@@ -50,6 +52,7 @@ exports.createPages = ({ actions, graphql }) => {
         }
       }
     )
+    console.log(`  Created page: ${path}`)
   }
 
   return graphql(`
