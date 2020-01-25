@@ -1,18 +1,16 @@
 import Layout from 'components/layout'
 import { DiscussionEmbed } from 'disqus-react'
-import { graphql } from 'gatsby'
+import { Link, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import kebabCase from 'lodash/kebabCase'
 import React from 'react'
 import config from 'root/config'
 
-// `data` is injected by the GraphQL query at the bottom
 export default function GuideTemplate({ data }) {
   const disqusConfig = {
     shortname: config.disqusShortName,
     config: { identifier: data.mdx.id }
   }
-
-  console.log("FIND ME: "+config.disqusShortName);
 
   return (
     <Layout fullMenu>
@@ -25,6 +23,20 @@ export default function GuideTemplate({ data }) {
                 <p>{data.mdx.frontmatter.description}</p>
               </header>
             </section>
+            <ul className="tags">
+              <li key="tags">
+                <Link to="/tags" className="button icon fa-tags">Tags</Link>
+              </li>
+              {
+                data.mdx.frontmatter.tags.map(
+                  tag => (
+                    <li key={tag}>
+                      <Link to={`/tags/${kebabCase(tag)}/`} className="button special small">{tag}</Link>
+                    </li>
+                  )
+                )
+              }
+            </ul>
             <hr />
             <div>
               <MDXRenderer>{data.mdx.body}</MDXRenderer>
@@ -47,6 +59,7 @@ export const pageQuery = graphql`
         path
         title
         description
+        tags
       }
       body
     }

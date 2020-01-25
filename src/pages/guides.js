@@ -11,8 +11,7 @@ const IndexPage = ({
 }) => {
   const Guides = edges
     .filter(edge => !!edge.node.frontmatter.date)
-    .filter(edge => edge.node.frontmatter.addToIndex)
-    .map(edge => <li key={edge.node.id}><GuideLink key={edge.node.id} guide={edge.node} /></li>)
+    .map(edge => <li key={edge.node.id}><GuideLink guide={edge.node}/></li>)
 
   return (
     <Layout>
@@ -65,7 +64,6 @@ export const pageQuery = graphql`
             path
             date(formatString: "MMMM DD, YYYY")
             title
-            addToIndex
           }
         }
       }
