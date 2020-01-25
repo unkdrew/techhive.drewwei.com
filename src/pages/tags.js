@@ -3,6 +3,7 @@ import { graphql } from 'gatsby'
 import kebabCase from 'lodash/kebabCase'
 import PropTypes from 'prop-types'
 import React from 'react'
+import Helmet from 'react-helmet'
 
 const TagsPage = ({
   data: {
@@ -13,6 +14,11 @@ const TagsPage = ({
   }
 }) => (
   <Layout fullMenu>
+    <Helmet>
+      <title>Tags - Dreezy's Tech Hive</title>
+      <meta name="description" content="Tags" />
+    </Helmet>
+
     <article id="main">
       <section className="wrapper style5">
         <div className="inner">

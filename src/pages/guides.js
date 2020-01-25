@@ -4,11 +4,13 @@ import { graphql } from 'gatsby'
 import React from 'react'
 import Helmet from 'react-helmet'
 
-const IndexPage = ({
-  data: {
-    allMdx: { edges }
+const IndexPage = (
+  {
+    data: {
+      allMdx: { edges }
+    }
   }
-}) => {
+) => {
   const Guides = edges
     .filter(edge => !!edge.node.frontmatter.date)
     .map(edge => <li key={edge.node.id}><GuideLink guide={edge.node}/></li>)
@@ -43,7 +45,6 @@ const IndexPage = ({
           </div>
         </section>
       </div>
-
     </Layout>
   )
 }

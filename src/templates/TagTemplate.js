@@ -3,19 +3,25 @@ import Layout from 'components/layout'
 import { graphql } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 
 const Tags = ({ pageContext, data }) => {
-  const { tag } = pageContext
+  const { tag, title } = pageContext
   const { edges } = data.allMdx
 
   return (
     <Layout fullMenu>
+      <Helmet>
+        <title>{`Tag: ${tag}`}</title>
+        <meta name="description" content={`Tag: ${tag}`}/>
+      </Helmet>
+
       <article id="main">
         <section className="wrapper style5">
           <div className="inner">
             <section>
               <header>
-                <h2 className="button icon fa-tag disabled">Tag: "{tag}"</h2>
+                <h2 className="button icon fa-tag disabled">{tag}</h2>
               </header>
             </section>
             <hr/>

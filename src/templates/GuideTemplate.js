@@ -4,9 +4,12 @@ import { Link, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import kebabCase from 'lodash/kebabCase'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import config from 'root/config'
 
-export default function GuideTemplate({ data }) {
+export default function GuideTemplate({ pageContext, data }) {
+  const { description, title } = pageContext
+
   const disqusConfig = {
     shortname: config.disqusShortName,
     config: { identifier: data.mdx.id }
@@ -14,6 +17,11 @@ export default function GuideTemplate({ data }) {
 
   return (
     <Layout fullMenu>
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+      </Helmet>
+
       <article id="main">
         <section className="wrapper style5">
           <div className="inner">

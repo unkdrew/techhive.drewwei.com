@@ -1,6 +1,21 @@
 import kebabCase from 'lodash/kebabCase'
 
+const { createFilePath } = require('gatsby-source-filesystem')
 const path = require('path')
+
+exports.onCreateNode = ({ node, getNode, actions }) => {
+  const { createNodeField } = actions
+  if ('Mdx' === node.internal.type) {
+    const slug = createFilePath({node, getNode, basePath: 'markdown-pages'})
+    createNodeField(
+      {
+        node,
+        name: 'slug',
+        value: slug
+      }
+    )
+  }
+}
 
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
@@ -10,11 +25,15 @@ exports.createPages = ({ actions, graphql }) => {
 
   function createPageForPageType(node, type, template) {
     if (type == node.frontmatter.type) {
+      const { description, title } = node.frontmatter
       createPage(
         {
           path: node.frontmatter.path,
           component: template,
-          context: {}
+          context: {
+            description,
+            title
+          }
         }
       )
     }
@@ -26,7 +45,8 @@ exports.createPages = ({ actions, graphql }) => {
         path: `/tags/${kebabCase(tag)}/`,
         component: template,
         context: {
-          tag
+          tag,
+          title: `Tag: ${tag}`
         }
       }
     )
@@ -38,9 +58,10 @@ exports.createPages = ({ actions, graphql }) => {
         edges {
           node {
             frontmatter {
+              description
               path
+              title
               type
-              tags
             }
           }
         }
