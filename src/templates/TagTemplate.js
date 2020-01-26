@@ -1,20 +1,21 @@
 import GuideLink from 'components/GuideLink'
 import Layout from 'components/layout'
+import SEO from 'components/SEO'
 import { graphql } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Helmet } from 'react-helmet'
 
 const Tags = ({ pageContext, data }) => {
-  const { tag, title } = pageContext
+  const { pagePath, tag, title } = pageContext
   const { edges } = data.allMdx
 
   return (
     <Layout fullMenu>
-      <Helmet>
-        <title>{`Tag: ${tag}`}</title>
-        <meta name="description" content={`Tag: ${tag}`}/>
-      </Helmet>
+      <SEO
+        title={title}
+        description={title}
+        path={pagePath}
+      />
 
       <article id="main">
         <section className="wrapper style5">

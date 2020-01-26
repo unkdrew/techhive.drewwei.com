@@ -1,10 +1,10 @@
 import Layout from 'components/layout'
+import SEO from 'components/SEO'
 import { DiscussionEmbed } from 'disqus-react'
 import { Link, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import kebabCase from 'lodash/kebabCase'
 import React from 'react'
-import { Helmet } from 'react-helmet'
 import config from 'root/config'
 
 export default function GuideTemplate({ pageContext, data }) {
@@ -17,10 +17,12 @@ export default function GuideTemplate({ pageContext, data }) {
 
   return (
     <Layout fullMenu>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-      </Helmet>
+      <SEO
+        title={title}
+        description={description}
+        path={data.mdx.frontmatter.path}
+        article
+      />
 
       <article id="main">
         <section className="wrapper style5">

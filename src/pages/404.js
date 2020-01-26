@@ -1,8 +1,13 @@
 import Layout from 'components/layout'
+import SEO from 'components/SEO'
 import React from 'react'
 
 const NotFoundPage = () => (
   <Layout>
+    <SEO
+      title='Not Found'
+      description='Not Found'
+    />
     <div id="main" className="alt">
       <section id="one">
         <div className="inner">

@@ -5,7 +5,8 @@ module.exports = {
   siteMetadata: {
     title: config.siteTitle,
     author: config.siteAuthor,
-    description: 'A personal blog, about tech.'
+    description: 'A personal blog, about tech.',
+    url: config.siteUrl
   },
   plugins: [
     {

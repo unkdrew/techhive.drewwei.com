@@ -3,20 +3,19 @@ import pic02 from 'assets/images/pic02.jpg'
 import pic03 from 'assets/images/pic03.jpg'
 import Banner from 'components/Banner'
 import Layout from 'components/layout'
+import SEO from 'components/SEO'
 import { Link } from 'gatsby'
 import React from 'react'
-import Helmet from 'react-helmet'
 import config from 'root/config'
 
 class HomeIndex extends React.Component {
   render() {
     return (
       <Layout>
-        <Helmet>
-          <title>{config.siteTitle}</title>
-          <meta name="description" content="Drew Wei's Personal Blog"/>
-          <meta name="keywords" content='blog, coding, guides'/>
-        </Helmet>
+        <SEO
+          title={config.siteTitle}
+          description="Drew Wei's Personal Tech Blog"
+        />
 
         <Banner />
 
@@ -47,7 +46,7 @@ class HomeIndex extends React.Component {
           <section id="two">
             <div className="inner">
               <header className="major">
-                <h2>Wanna check out some other stuff?</h2>
+                <h2>Wanna check out some more?</h2>
               </header>
               <ul className="actions">
                 <li><a href="https://drewwei.com" className="button next">Go to drewwei.com</a></li>

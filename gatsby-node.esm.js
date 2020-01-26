@@ -47,6 +47,7 @@ exports.createPages = ({ actions, graphql }) => {
         path,
         component: template,
         context: {
+          pagePath: path,
           tag,
           title: `Tag: ${tag}`
         }

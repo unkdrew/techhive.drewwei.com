@@ -1,23 +1,26 @@
 import Layout from 'components/layout'
+import SEO from 'components/SEO'
 import { graphql } from 'gatsby'
 import kebabCase from 'lodash/kebabCase'
 import PropTypes from 'prop-types'
 import React from 'react'
-import Helmet from 'react-helmet'
 
-const TagsPage = ({
-  data: {
-    allMdx: { group },
-    site: {
-      siteMetadata: { title }
+const TagsPage = (
+  {
+    data: {
+      allMdx: { group },
+      site: {
+        siteMetadata: { title }
+      }
     }
   }
-}) => (
+) => (
   <Layout fullMenu>
-    <Helmet>
-      <title>Tags - Dreezy's Tech Hive</title>
-      <meta name="description" content="Tags" />
-    </Helmet>
+    <SEO
+      title='Tags'
+      description='Tags'
+      path='/tags/'
+    />
 
     <article id="main">
       <section className="wrapper style5">

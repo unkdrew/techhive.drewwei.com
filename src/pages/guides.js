@@ -1,8 +1,8 @@
 import GuideLink from 'components/GuideLink'
 import Layout from 'components/layout'
+import SEO from 'components/SEO'
 import { graphql } from 'gatsby'
 import React from 'react'
-import Helmet from 'react-helmet'
 
 const IndexPage = (
   {
@@ -17,10 +17,11 @@ const IndexPage = (
 
   return (
     <Layout>
-      <Helmet>
-        <title>Guides - Dreezy's Tech Hive</title>
-        <meta name="description" content="Guides" />
-      </Helmet>
+      <SEO
+        title='Guides'
+        description='Guides'
+        path='/guides/'
+      />
 
       <section id="banner" className="style1">
         <div className="inner">
