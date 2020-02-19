@@ -1,6 +1,6 @@
-import pic01 from 'assets/images/pic01.jpg'
-import pic02 from 'assets/images/pic02.jpg'
-import pic03 from 'assets/images/pic03.jpg'
+import backgroundGadgets from 'assets/images/background_gadgets.jpg'
+import backgroundGuides from 'assets/images/background_guides.jpg'
+import backgroundSmartHome from 'assets/images/background_smart_home.jpg'
 import Banner from 'components/Banner'
 import Layout from 'components/layout'
 import SEO from 'components/SEO'
@@ -21,21 +21,21 @@ class HomeIndex extends React.Component {
 
         <div id="main">
           <section id="one" className="tiles">
-            <article style={{backgroundImage: `url(${pic01})`}}>
+            <article style={{backgroundImage: `url(${backgroundGuides})`}}>
               <header className="major">
                 <h3>Guides</h3>
                 <p>Coding, etc.</p>
               </header>
               <Link to="/guides" className="link primary"></Link>
             </article>
-            <article style={{backgroundImage: `url(${pic02})`}}>
+            <article style={{backgroundImage: `url(${backgroundGadgets})`}}>
               <header className="major">
                 <h3>Gadgets</h3>
                 <p>Coming soon..</p>
               </header>
               <Link to="/#" className="link primary"></Link>
             </article>
-            <article style={{backgroundImage: `url(${pic03})`}}>
+            <article style={{backgroundImage: `url(${backgroundSmartHome})`}}>
               <header className="major">
                 <h3>Smart Home</h3>
                 <p>Coming soon..</p>

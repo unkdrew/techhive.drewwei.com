@@ -46,11 +46,7 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
 * `cd` into the root directory of the website project.
 * Run command: `npm install && netlify dev`
 
-#### 3.3 How to test changes locally
-* Write tests in NightwatchJS in the `tst` folder.
-* Run command: `npm run integ-test-local`
-
-#### 3.4 How to test Netlify build/deploy locally
+#### 3.3 How to test Netlify build/deploy locally
 * For the first time
   * Run command:
   ```
