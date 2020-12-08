@@ -21,7 +21,7 @@ This document aims to guide you through the steps to set up your API Gateway end
 * An edge-optimized API Gateway endpoint internally employs an APIG-managed CloudFront distribution that sits in front of the API Gateway endpoint, and this CloudFront distribution is configured to only respond to HTTPS requests from clients that support SNI.
 * For a CloudFront distribution to accept requests from clients that do not support SNI, we need to configure the CloudFront distribution to use Dedicated IP Custom SSL. This will also incur additional cost, as it is dedicating an IP address to your SSL certificate. See [here](https://aws.amazon.com/cloudfront/custom-ssl-domains/) for more details and pricing information.
 * The custom SSL certificate for the CloudFront distribution must exist in `us-east-1`. You might have to manually manage the certificate instead of source-controlling it because of this. (See [CloudFront Developer Guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region))
-* Validation of a ACM certificate cannot be automated using CloudFormation as of 01/07/2020. As a result, owner will need to manually validate the certificate.
+* Validation of an ACM certificate cannot be automated using CloudFormation as of 01/07/2020. As a result, owner will need to manually validate the certificate.
 
 # 4. What we want
 In the end, we want a custom domain name that routes to a CloudFront distribution that 1) is managed by ourselves, 2) responds to requests from clients that do not support SNI, and 3) routes to our regional API Gateway endpoint.
