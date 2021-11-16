@@ -1,6 +1,6 @@
 import GuideLink from 'components/GuideLink'
 import Layout from 'components/layout'
-import SEO from 'components/SEO'
+import Seo from 'components/Seo'
 import { graphql } from 'gatsby'
 import React from 'react'
 
@@ -17,7 +17,7 @@ const IndexPage = (
 
   return (
     <Layout>
-      <SEO
+      <Seo
         title='Guides'
         description='Guides'
         path='/guides/'

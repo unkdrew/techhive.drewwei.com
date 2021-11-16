@@ -3,7 +3,7 @@ import backgroundGuides from 'assets/images/background_guides.jpg'
 import backgroundSmartHome from 'assets/images/background_smart_home.jpg'
 import Banner from 'components/Banner'
 import Layout from 'components/layout'
-import SEO from 'components/SEO'
+import Seo from 'components/Seo'
 import { Link } from 'gatsby'
 import React from 'react'
 import config from 'root/config'
@@ -12,7 +12,7 @@ class HomeIndex extends React.Component {
   render() {
     return (
       <Layout>
-        <SEO
+        <Seo
           title={config.siteTitle}
           description="Drew Wei's Personal Tech Blog"
         />

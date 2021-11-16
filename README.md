@@ -1,19 +1,12 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a55c8f7f-edb7-474b-a634-b3f1abf9ea56/deploy-status)](https://app.netlify.com/sites/dreezys-tech-hive/deploys)
 
-# Snapshot of the template on GitHub which this project was created from
-https://github.com/codebushi/gatsby-starter-forty/tree/0c964b13bb83983e308eb3ea0a506038aa75355e
-
-# Original README
-https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0a506038aa75355e/README.md
-
-# New README
 ### 1. Environment Setup
 * Install [Homebrew](https://docs.brew.sh/Installation).
 * Install Node.js
   * Run command: `brew install node`
   * Verify version of the installed `node` and `npm`.
-    * Run command: `node --version` (Version should be greater than or equal to `v12.4.0`.)
-    * Run command: `npm --version` (Version should be greater than or equal to `6.9.0`.)
+    * Run command: `node --version` (Version should be greater than or equal to `v16.13.0`.)
+    * Run command: `npm --version` (Version should be greater than or equal to `8.1.0`.)
   * Specify the version of `node` to be used by Netlify.
     * Update file `.node-version`.
 * Install Git.
@@ -31,16 +24,22 @@ https://github.com/codebushi/gatsby-starter-forty/blob/0c964b13bb83983e308eb3ea0
 
 ### 3. Local Development
 #### 3.1 Check package health
+* Upgrade `node` and `npm`.
+  * Run commands:
+    * `nvm install --lts`
+    * `npm install -g npm@latest`
 * Check if there are dependencies not declared in `package.json`.
   * This checks if there are dependencies that are available on your machine but not declared in this package's dependency closure, e.g. dependencies that were installed via `npm install` without specifying the `--save` flag.
   * Run command: `npm prune`
-* Check if there are upgradable dependencies.
-  * Run command: `npm outdated`
-  * To update all dependencies.
-    * Run command: `npm update --save/--save-dev`
-  * To update a certain dependency.
-    * Run command: `npm install <DEPENDENCY_NAME>@latest --save`
-    * e.g. `npm install gatsby@latest --save`
+* Check if there are upgradable global dependencies.
+  * Run command: `npm outdated -g --depth=0`
+  * To update all global dependencies:
+    * Run command: `npm update -g`
+* Check if there are upgradable project dependencies.
+  * Use `npm-check-updates`:
+    * `npm i -g npm-check-updates`
+    * `ncu -u`
+    * `npm install`
 
 #### 3.2 To run the website locally on your machine
 * `cd` into the root directory of the website project.

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 
-const SEO = (
+const Seo = (
   { article, description, path, title }
 ) => (
   <StaticQuery
@@ -20,7 +20,7 @@ const SEO = (
           }
         }
       ) => {
-        const seo = {
+        const Seo = {
           title: title || defaultTitle,
           description: description || defaultDescription,
           url: `${siteUrl}${path || '/'}`,
@@ -28,15 +28,15 @@ const SEO = (
 
         return (
           <>
-            <Helmet title={seo.title}>
-              <meta name="description" content={seo.description} />
-              {seo.url && <meta property="og:url" content={seo.url} />}
+            <Helmet title={Seo.title}>
+              <meta name="description" content={Seo.description} />
+              {Seo.url && <meta property="og:url" content={Seo.url} />}
               {(article ? true : null) && (
                 <meta property="og:type" content="article" />
               )}
-              {seo.title && <meta property="og:title" content={seo.title} />}
-              {seo.description && (
-                <meta property="og:description" content={seo.description} />
+              {Seo.title && <meta property="og:title" content={Seo.title} />}
+              {Seo.description && (
+                <meta property="og:description" content={Seo.description} />
               )}
             </Helmet>
           </>
@@ -46,9 +46,9 @@ const SEO = (
   />
 )
 
-export default SEO
+export default Seo
 
-SEO.propTypes = {
+Seo.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   image: PropTypes.string,
@@ -56,7 +56,7 @@ SEO.propTypes = {
   article: PropTypes.bool
 }
 
-SEO.defaultProps = {
+Seo.defaultProps = {
   title: null,
   description: null,
   image: null,
@@ -65,7 +65,7 @@ SEO.defaultProps = {
 }
 
 const query = graphql`
-  query SEO {
+  query Seo {
     site {
       siteMetadata {
         defaultTitle: title

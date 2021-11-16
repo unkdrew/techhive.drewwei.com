@@ -1,5 +1,5 @@
 import Layout from 'components/layout'
-import SEO from 'components/SEO'
+import Seo from 'components/Seo'
 import { DiscussionEmbed } from 'disqus-react'
 import { Link, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
@@ -17,7 +17,7 @@ export default function GuideTemplate({ pageContext, data }) {
 
   return (
     <Layout fullMenu>
-      <SEO
+      <Seo
         title={title}
         description={description}
         path={data.mdx.frontmatter.path}

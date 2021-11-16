@@ -1,10 +1,10 @@
 import Layout from 'components/layout'
-import SEO from 'components/SEO'
+import Seo from 'components/Seo'
 import React from 'react'
 
 const NotFoundPage = () => (
   <Layout>
-    <SEO
+    <Seo
       title='Not Found'
       description='Not Found'
     />

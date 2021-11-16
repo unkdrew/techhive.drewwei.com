@@ -1,5 +1,5 @@
 import Layout from 'components/layout'
-import SEO from 'components/SEO'
+import Seo from 'components/Seo'
 import { graphql } from 'gatsby'
 import kebabCase from 'lodash/kebabCase'
 import PropTypes from 'prop-types'
@@ -16,7 +16,7 @@ const TagsPage = (
   }
 ) => (
   <Layout fullMenu>
-    <SEO
+    <Seo
       title='Tags'
       description='Tags'
       path='/tags/'

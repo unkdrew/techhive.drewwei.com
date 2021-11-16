@@ -1,6 +1,6 @@
 import GuideLink from 'components/GuideLink'
 import Layout from 'components/layout'
-import SEO from 'components/SEO'
+import Seo from 'components/Seo'
 import { graphql } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -11,7 +11,7 @@ const Tags = ({ pageContext, data }) => {
 
   return (
     <Layout fullMenu>
-      <SEO
+      <Seo
         title={title}
         description={title}
         path={pagePath}
