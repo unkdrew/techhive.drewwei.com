@@ -2,9 +2,12 @@
 
 ### 1. Environment Setup
 * Install [Homebrew](https://docs.brew.sh/Installation).
-* Install Node.js
-  * Run command: `brew install node`
-  * Verify version of the installed `node` and `npm`.
+* Install `nvm`
+  * Visit: https://github.com/nvm-sh/nvm
+* Install `node` and `npm`
+  * Run command: `nvm install --lts`
+  * Run command: `npm install -g npm@latest`
+  * Verify version of the installed `node` and `npm`
     * Run command: `node --version` (Version should be greater than or equal to `v16.13.0`.)
     * Run command: `npm --version` (Version should be greater than or equal to `8.1.0`.)
   * Specify the version of `node` to be used by Netlify.
@@ -19,7 +22,7 @@
   * Visit [docker.com](https://www.docker.com/) to download a desktop client for Mac.
 
 ### 2. Recommended Development Tools
-* Terminal [iTerm2](https://www.iterm2.com/)
+* Terminal: [iTerm2](https://www.iterm2.com/)
 * Shell: [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh)
 
 ### 3. Local Development
