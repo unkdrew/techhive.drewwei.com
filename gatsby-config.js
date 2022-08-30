@@ -2,6 +2,9 @@ const config = require('./config');
 const path = require('path')
 
 module.exports = {
+  flags: {
+    DEV_SSR: true
+  },
   siteMetadata: {
     title: config.siteTitle,
     author: config.siteAuthor,
@@ -9,6 +12,7 @@ module.exports = {
     url: config.siteUrl
   },
   plugins: [
+    'gatsby-plugin-image',
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
@@ -70,6 +74,7 @@ module.exports = {
         ]
       }
     },
+    'gatsby-transformer-sharp',
     {
       resolve: 'gatsby-source-filesystem',
       options: {

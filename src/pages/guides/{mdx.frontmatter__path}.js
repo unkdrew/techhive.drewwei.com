@@ -2,14 +2,11 @@ import Layout from 'components/layout'
 import Seo from 'components/Seo'
 import { DiscussionEmbed } from 'disqus-react'
 import { Link, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 import kebabCase from 'lodash/kebabCase'
 import React from 'react'
 import config from 'root/config'
 
-export default function GuideTemplate({ pageContext, data }) {
-  const { description, title } = pageContext
-
+const Guide = ({ data, children }) => {
   const disqusConfig = {
     shortname: config.disqusShortName,
     config: { identifier: data.mdx.id }
@@ -18,8 +15,8 @@ export default function GuideTemplate({ pageContext, data }) {
   return (
     <Layout fullMenu>
       <Seo
-        title={title}
-        description={description}
+        title={data.mdx.frontmatter.title}
+        description={data.mdx.frontmatter.description}
         path={data.mdx.frontmatter.path}
         article
       />
@@ -41,7 +38,7 @@ export default function GuideTemplate({ pageContext, data }) {
                 data.mdx.frontmatter.tags.map(
                   tag => (
                     <li key={tag}>
-                      <Link to={`/tags/${kebabCase(tag)}/`} className="button special small">{tag}</Link>
+                        <Link to={`/tags/${kebabCase(tag)}/`} className="button special small">{tag}</Link>
                     </li>
                   )
                 )
@@ -49,7 +46,7 @@ export default function GuideTemplate({ pageContext, data }) {
             </ul>
             <hr />
             <div>
-              <MDXRenderer>{data.mdx.body}</MDXRenderer>
+              {children}
             </div>
             <div>
               <DiscussionEmbed {...disqusConfig} />
@@ -61,15 +58,22 @@ export default function GuideTemplate({ pageContext, data }) {
   )
 }
 
+export default Guide
+
 export const pageQuery = graphql`
-  query($path: String!) {
-    mdx(frontmatter: { path: { eq: $path } }) {
+  query($id: String!) {
+    mdx(id: {eq: $id}) {
       id
       frontmatter {
         path
         title
         description
         tags
+        embeddedImagesLocal {
+          childImageSharp {
+            gatsbyImageData(layout: FULL_WIDTH)
+          }
+        }
       }
       body
     }
