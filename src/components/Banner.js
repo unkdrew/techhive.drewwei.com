@@ -10,7 +10,7 @@ const Banner = (props) => (
         <p>Drew Wei</p>
       </div>
       <div className="content">
-        <p>A software engineer @ Amazon Web Services</p>
+        <p>A software engineer @ Apple</p>
       </div>
     </div>
   </section>
