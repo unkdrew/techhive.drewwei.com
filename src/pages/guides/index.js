@@ -1,4 +1,3 @@
-import GuideLink from 'components/GuideLink'
 import Layout from 'components/layout'
 import Seo from 'components/Seo'
 import { graphql } from 'gatsby'
@@ -13,7 +12,9 @@ const IndexPage = (
 ) => {
   const Guides = edges
     .filter(edge => !!edge.node.frontmatter.date)
-    .map(edge => <li key={edge.node.id}><GuideLink guide={edge.node}/></li>)
+    .map(
+      edge => <li key={edge.node.id}><a href={`${edge.node.frontmatter.directory}${edge.node.frontmatter.path}`}>[{edge.node.frontmatter.date}] {edge.node.frontmatter.title}</a></li>
+    )
 
   return (
     <Layout>
@@ -63,9 +64,10 @@ export const pageQuery = graphql`
           id
           excerpt(pruneLength: 250)
           frontmatter {
+            title
+            directory
             path
             date(formatString: "MMMM DD, YYYY")
-            title
           }
         }
       }

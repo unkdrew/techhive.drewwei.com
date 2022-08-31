@@ -1,11 +1,19 @@
 ---
-path: '/guides/disable-sni-for-api-gateway-custom-domain'
+path: 'disable-sni-for-api-gateway-custom-domain'
 date: '2020-01-09T00:00:00.000Z'
 type: 'guide'
+directory: '/guides/'
 title: "How to disable SNI for your API Gateway endpoint's custom domain"
 description: "Are you looking for ways to allow your API Gateway endpoint's custom domain name to support clients that do not support SNI yet? You will want to read this!"
 tags: ['AWS', 'API Gateway', 'Cloud Formation', 'SNI']
+localImages:
+  - SNI_Summary_With_SNI.png
+  - SNI_Details_With_SNI.png
+  - SNI_Summary_Without_SNI.png
+  - SNI_Details_Without_SNI.png
 ---
+
+import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 # 1. Glossary
 * SNI: Server Name Indication, is an extension to the Transport Layer Security (TLS) computer networking protocol by which a client indicates which hostname it is attempting to connect to at the start of the handshaking process.
@@ -204,17 +212,22 @@ Resources:
 ```
 
 # 6. Verification
-Now go to https://www.ssllabs.com/ssltest/ and inspect our custom domain's SSL settings. The scan report should show that handshake simulations without SNI are also passing.
+Now go to [SSL Server Test by Qualys](https://www.ssllabs.com/ssltest/) and inspect our custom domain's SSL settings. The scan report should show that handshake simulations without SNI are also passing.
 
 ## 6.1 Example scan result for a site that only serves HTTPS requests using SNI
-![SNI_Summary_With_SNI](./SNI_Summary_With_SNI.png)
+<GatsbyImage alt='SNI_Summary_With_SNI.png' image={getImage(props.data.mdx.frontmatter.localImages[0])} />
 
-![SNI_Details_With_SNI](./SNI_Details_With_SNI.png)
+<br/>
+
+<GatsbyImage alt='SNI_Details_With_SNI.png' image={getImage(props.data.mdx.frontmatter.localImages[1])} />
 
 ## 6.2 Example scan result for a site that serves all HTTPS requests
-![SNI_Summary_Without_SNI](./SNI_Summary_Without_SNI.png)
 
-![SNI_Details_Without_SNI](./SNI_Details_Without_SNI.png)
+<GatsbyImage alt='SNI_Summary_Without_SNI.png' image={getImage(props.data.mdx.frontmatter.localImages[2])} />
+
+<br/>
+
+<GatsbyImage alt='SNI_Details_Without_SNI.png' image={getImage(props.data.mdx.frontmatter.localImages[3])} />
 
 # 7. Appendix
 

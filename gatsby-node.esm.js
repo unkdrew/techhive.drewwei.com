@@ -20,25 +20,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
-  const guideTemplate = path.resolve('src/templates/GuideTemplate.js')
   const tagTemplate = path.resolve('src/templates/TagTemplate.js')
-
-  function createPageForPageType(node, type, template) {
-    if (type == node.frontmatter.type) {
-      const { description, path, title } = node.frontmatter
-      createPage(
-        {
-          path,
-          component: template,
-          context: {
-            description,
-            title
-          }
-        }
-      )
-      console.log(`  Created page: ${path}`)
-    }
-  }
 
   function createPageForTag(tag, template) {
     const path = `/tags/${kebabCase(tag)}/`
@@ -79,12 +61,6 @@ exports.createPages = ({ actions, graphql }) => {
       if (result.errors) {
         return Promise.reject(result.errors)
       }
-
-      result.data.allMdx.edges.forEach(
-        ({ node }) => {
-          createPageForPageType(node, 'guide', guideTemplate)
-        }
-      )
 
       result.data.allMdx.tags.forEach(
         (tag) => {

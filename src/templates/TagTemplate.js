@@ -1,4 +1,3 @@
-import GuideLink from 'components/GuideLink'
 import Layout from 'components/layout'
 import Seo from 'components/Seo'
 import { graphql } from 'gatsby'
@@ -32,7 +31,7 @@ const Tags = ({ pageContext, data }) => {
                   ({ node }) => {
                     return (
                       <li key={node.id}>
-                        <GuideLink guide={node} />
+                        <a href={`${node.frontmatter.directory}${node.frontmatter.path}`}>[{node.frontmatter.date}] {node.frontmatter.title}</a>
                       </li>
                     )
                   }
@@ -47,25 +46,37 @@ const Tags = ({ pageContext, data }) => {
 }
 
 Tags.propTypes = {
-  pageContext: PropTypes.shape({
-    tag: PropTypes.string.isRequired
-  }),
-  data: PropTypes.shape({
-    allMdx: PropTypes.shape({
-      edges: PropTypes.arrayOf(
-        PropTypes.shape({
-          node: PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            frontmatter: PropTypes.shape({
-              path: PropTypes.string.isRequired,
-              date: PropTypes.string.isRequired,
-              title: PropTypes.string.isRequired
-            })
-          })
-        }).isRequired
+  pageContext: PropTypes.shape(
+    {
+      tag: PropTypes.string.isRequired
+    }
+  ),
+  data: PropTypes.shape(
+    {
+      allMdx: PropTypes.shape(
+        {
+          edges: PropTypes.arrayOf(
+            PropTypes.shape(
+              {
+                node: PropTypes.shape(
+                  {
+                    id: PropTypes.string.isRequired,
+                    frontmatter: PropTypes.shape(
+                      {
+                        path: PropTypes.string.isRequired,
+                        date: PropTypes.string.isRequired,
+                        title: PropTypes.string.isRequired
+                      }
+                    )
+                  }
+                )
+              }
+            ).isRequired
+          )
+        }
       )
-    })
-  })
+    }
+  )
 }
 
 export default Tags
@@ -80,9 +91,10 @@ export const pageQuery = graphql`
         node {
           id
           frontmatter {
+            title
+            directory
             path
             date(formatString: "MMMM DD, YYYY")
-            title
           }
         }
       }
