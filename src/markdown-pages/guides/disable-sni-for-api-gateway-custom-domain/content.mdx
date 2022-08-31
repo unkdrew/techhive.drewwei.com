@@ -6,7 +6,7 @@ directory: '/guides/'
 title: "How to disable SNI for your API Gateway endpoint's custom domain"
 description: "Are you looking for ways to allow your API Gateway endpoint's custom domain name to support clients that do not support SNI yet? You will want to read this!"
 tags: ['AWS', 'API Gateway', 'Cloud Formation', 'SNI']
-embeddedImagesLocal:
+localImages:
   - SNI_Summary_With_SNI.png
   - SNI_Details_With_SNI.png
   - SNI_Summary_Without_SNI.png
@@ -212,22 +212,22 @@ Resources:
 ```
 
 # 6. Verification
-Now go to https://www.ssllabs.com/ssltest/ and inspect our custom domain's SSL settings. The scan report should show that handshake simulations without SNI are also passing.
+Now go to [SSL Server Test by Qualys](https://www.ssllabs.com/ssltest/) and inspect our custom domain's SSL settings. The scan report should show that handshake simulations without SNI are also passing.
 
 ## 6.1 Example scan result for a site that only serves HTTPS requests using SNI
-<GatsbyImage alt='SNI_Summary_With_SNI.png' image={getImage(props.data.mdx.frontmatter.embeddedImagesLocal[0])} />
+<GatsbyImage alt='SNI_Summary_With_SNI.png' image={getImage(props.data.mdx.frontmatter.localImages[0])} />
 
 <br/>
 
-<GatsbyImage alt='SNI_Details_With_SNI.png' image={getImage(props.data.mdx.frontmatter.embeddedImagesLocal[1])} />
+<GatsbyImage alt='SNI_Details_With_SNI.png' image={getImage(props.data.mdx.frontmatter.localImages[1])} />
 
 ## 6.2 Example scan result for a site that serves all HTTPS requests
 
-<GatsbyImage alt='SNI_Summary_Without_SNI.png' image={getImage(props.data.mdx.frontmatter.embeddedImagesLocal[2])} />
+<GatsbyImage alt='SNI_Summary_Without_SNI.png' image={getImage(props.data.mdx.frontmatter.localImages[2])} />
 
 <br/>
 
-<GatsbyImage alt='SNI_Details_Without_SNI.png' image={getImage(props.data.mdx.frontmatter.embeddedImagesLocal[3])} />
+<GatsbyImage alt='SNI_Details_Without_SNI.png' image={getImage(props.data.mdx.frontmatter.localImages[3])} />
 
 # 7. Appendix
 

@@ -69,7 +69,7 @@ export const pageQuery = graphql`
         title
         description
         tags
-        embeddedImagesLocal {
+        localImages {
           childImageSharp {
             gatsbyImageData(layout: FULL_WIDTH)
           }
