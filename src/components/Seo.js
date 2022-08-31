@@ -31,13 +31,9 @@ const Seo = (
             <Helmet title={Seo.title}>
               <meta name="description" content={Seo.description} />
               {Seo.url && <meta property="og:url" content={Seo.url} />}
-              {(article ? true : null) && (
-                <meta property="og:type" content="article" />
-              )}
+              {(article ? true : null) && (<meta property="og:type" content="article" />)}
               {Seo.title && <meta property="og:title" content={Seo.title} />}
-              {Seo.description && (
-                <meta property="og:description" content={Seo.description} />
-              )}
+              {Seo.description && (<meta property="og:description" content={Seo.description} />)}
             </Helmet>
           </>
         )

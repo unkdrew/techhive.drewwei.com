@@ -54,21 +54,31 @@ const TagsPage = (
 )
 
 TagsPage.propTypes = {
-  data: PropTypes.shape({
-    allMdx: PropTypes.shape({
-      group: PropTypes.arrayOf(
-        PropTypes.shape({
-          fieldValue: PropTypes.string.isRequired,
-          totalCount: PropTypes.number.isRequired
-        }).isRequired
+  data: PropTypes.shape(
+    {
+      allMdx: PropTypes.shape(
+        {
+          group: PropTypes.arrayOf(
+            PropTypes.shape(
+              {
+                fieldValue: PropTypes.string.isRequired,
+                totalCount: PropTypes.number.isRequired
+              }
+            ).isRequired
+          )
+        }
+      ),
+      site: PropTypes.shape(
+        {
+          siteMetadata: PropTypes.shape(
+            {
+              title: PropTypes.string.isRequired
+            }
+          )
+        }
       )
-    }),
-    site: PropTypes.shape({
-      siteMetadata: PropTypes.shape({
-        title: PropTypes.string.isRequired
-      })
-    })
-  })
+    }
+  )
 }
 
 export default TagsPage
