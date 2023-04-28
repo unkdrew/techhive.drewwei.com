@@ -8,8 +8,8 @@
   * Run command: `nvm install --lts`
   * Run command: `npm install -g npm@latest`
   * Verify version of the installed `node` and `npm`
-    * Run command: `node --version` (Version should be greater than or equal to `v16.13.0`.)
-    * Run command: `npm --version` (Version should be greater than or equal to `8.1.0`.)
+    * Run command: `node --version` (Version should be greater than or equal to `v18.9.1`.)
+    * Run command: `npm --version` (Version should be greater than or equal to `9.6.5`.)
   * Specify the version of `node` to be used by Netlify.
     * Update file `.node-version`.
 * Install Git.
