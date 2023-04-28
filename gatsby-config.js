@@ -13,13 +13,16 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-image',
+    'gatsby-plugin-offline',
     {
-      resolve: 'gatsby-plugin-google-analytics',
+      resolve: 'gatsby-plugin-google-tagmanager',
       options: {
-        trackingId: 'UA-156922059-1'
+        id: 'G-D40MJ2N274',
+        includeInDevelopment: true,
+        defaultDataLayer: { platform: 'gatsby' },
+        enableWebVitalsTracking: true
       }
     },
-    'gatsby-plugin-offline',
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-plugin-manifest',
