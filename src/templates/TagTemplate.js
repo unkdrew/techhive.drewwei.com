@@ -84,7 +84,7 @@ export default Tags
 export const pageQuery = graphql`
   query($tag: String) {
     allMdx(
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { tags: { in: [$tag] } } }
     ) {
       edges {

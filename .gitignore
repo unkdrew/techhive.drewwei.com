@@ -1,8 +1,9 @@
+# IDE
+.idea/
+
 # Project dependencies
 .cache
 node_modules
-yarn-error.log
-yarn.lock
 
 # Build directory
 /public

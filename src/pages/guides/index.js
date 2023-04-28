@@ -56,7 +56,7 @@ export default IndexPage
 export const pageQuery = graphql`
   query {
     allMdx(
-      sort: { order: DESC, fields: [ frontmatter___date ] },
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { type: { eq: "guide" } } }
     ) {
       edges {

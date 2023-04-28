@@ -91,7 +91,7 @@ export const pageQuery = graphql`
       }
     }
     allMdx {
-      group(field: frontmatter___tags) {
+      group(field: { frontmatter: { tags: SELECT } }) {
         fieldValue
         totalCount
       }

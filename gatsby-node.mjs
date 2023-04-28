@@ -1,9 +1,8 @@
-import kebabCase from 'lodash/kebabCase'
+import { createFilePath } from 'gatsby-source-filesystem'
+import _ from 'lodash'
+import { resolve } from 'path'
 
-const { createFilePath } = require('gatsby-source-filesystem')
-const path = require('path')
-
-exports.onCreateNode = ({ node, getNode, actions }) => {
+export const onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if ('Mdx' === node.internal.type) {
     const slug = createFilePath({node, getNode, basePath: 'markdown-pages'})
@@ -17,13 +16,13 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   }
 }
 
-exports.createPages = ({ actions, graphql }) => {
+export const createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
-  const tagTemplate = path.resolve('src/templates/TagTemplate.js')
+  const tagTemplate = resolve('src/templates/TagTemplate.js')
 
   function createPageForTag(tag, template) {
-    const path = `/tags/${kebabCase(tag)}/`
+    const path = `/tags/${_.kebabCase(tag)}/`
     createPage(
       {
         path,
@@ -51,7 +50,7 @@ exports.createPages = ({ actions, graphql }) => {
             }
           }
         }
-        tags: group(field: frontmatter___tags) {
+        tags: group(field: { frontmatter: { tags: SELECT } }) {
           fieldValue
         }
       }
